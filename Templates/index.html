@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Student Management System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                🎓
+            </div>
+
+            <div class="brand-text">
+                <h2>StudentHub</h2>
+                <span>Management System</span>
+            </div>
+
+        </div>
+
+
+        <div class="menu-title">
+            MAIN MENU
+        </div>
+
+
+        <nav class="sidebar-menu">
+
+            <button class="menu-item active"
+                    onclick="showSection('dashboard')">
+
+                <span class="menu-icon">⌂</span>
+
+                <span>Dashboard</span>
+
+            </button>
+
+
+            <button class="menu-item"
+                    onclick="showSection('students')">
+
+                <span class="menu-icon">👨‍🎓</span>
+
+                <span>Students</span>
+
+            </button>
+
+
+            <button class="menu-item"
+                    onclick="showSection('addStudent')">
+
+                <span class="menu-icon">＋</span>
+
+                <span>Add Student</span>
+
+            </button>
+
+
+            <button class="menu-item"
+                    onclick="showSection('searchStudent')">
+
+                <span class="menu-icon">⌕</span>
+
+                <span>Search Student</span>
+
+            </button>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="system-status">
+
+                <span class="status-dot"></span>
+
+                <div>
+                    <strong>System Online</strong>
+                    <small>Database connected</small>
+                </div>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main-content">
+
+
+        <!-- TOP BAR -->
+
+        <header class="topbar">
+
+            <div class="page-heading">
+
+                <span class="welcome-text">
+                    STUDENT MANAGEMENT SYSTEM
+                </span>
+
+                <h1 id="pageTitle">
+                    Dashboard
+                </h1>
+
+                <p id="pageDescription">
+                    Overview of your student records and statistics.
+                </p>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <div class="date-box">
+
+                    <span class="date-icon">📅</span>
+
+                    <div>
+                        <small>Today</small>
+                        <strong id="currentDate">
+                            Loading...
+                        </strong>
+                    </div>
+
+                </div>
+
+
+                <button class="header-add-btn"
+                        onclick="showSection('addStudent')">
+
+                    <span>＋</span>
+
+                    Add Student
+
+                </button>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- ================= DASHBOARD ================= -->
+
+        <section id="dashboard"
+                 class="section active-section">
+
+
+            <!-- STATISTICS -->
+
+            <div class="stats-grid">
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <div class="stat-icon students-icon">
+                            👨‍🎓
+                        </div>
+
+                        <span class="stat-label">
+                            TOTAL STUDENTS
+                        </span>
+
+                    </div>
+
+                    <div class="stat-value"
+                         id="totalStudents">
+                        0
+                    </div>
+
+                    <div class="stat-footer">
+                        <span class="stat-positive">
+                            ●
+                        </span>
+
+                        Students registered
+                    </div>
+
+                </div>
+
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <div class="stat-icon department-icon">
+                            🏢
+                        </div>
+
+                        <span class="stat-label">
+                            DEPARTMENTS
+                        </span>
+
+                    </div>
+
+                    <div class="stat-value"
+                         id="totalDepartments">
+                        0
+                    </div>
+
+                    <div class="stat-footer">
+                        Active departments
+                    </div>
+
+                </div>
+
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <div class="stat-icon marks-icon">
+                            ⭐
+                        </div>
+
+                        <span class="stat-label">
+                            AVERAGE MARKS
+                        </span>
+
+                    </div>
+
+                    <div class="stat-value">
+
+                        <span id="averageMarks">
+                            0
+                        </span>
+
+                        <small>%</small>
+
+                    </div>
+
+                    <div class="stat-footer">
+                        Overall student average
+                    </div>
+
+                </div>
+
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <div class="stat-icon database-icon">
+                            💾
+                        </div>
+
+                        <span class="stat-label">
+                            DATABASE
+                        </span>
+
+                    </div>
+
+                    <div class="stat-value database-value">
+                        ACTIVE
+                    </div>
+
+                    <div class="stat-footer">
+
+                        <span class="stat-positive">
+                            ●
+                        </span>
+
+                        Connected
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- RECENT STUDENTS -->
+
+            <div class="dashboard-grid">
+
+
+                <div class="panel students-panel">
+
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <h2>
+                                Recent Students
+                            </h2>
+
+                            <p>
+                                Recently added student records
+                            </p>
+
+                        </div>
+
+
+                        <button class="view-all-btn"
+                                onclick="showSection('students')">
+
+                            View All →
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="table-wrapper">
+
+                        <table class="student-table">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>STUDENT</th>
+
+                                    <th>ROLL NO.</th>
+
+                                    <th>DEPARTMENT</th>
+
+                                    <th>MARKS</th>
+
+                                    <th>ACTION</th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody id="recentStudentTable">
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- QUICK ACTIONS -->
+
+                <div class="panel quick-panel">
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <h2>
+                                Quick Actions
+                            </h2>
+
+                            <p>
+                                Manage student records
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="quick-actions">
+
+
+                        <button class="quick-action"
+                                onclick="showSection('addStudent')">
+
+                            <div class="quick-icon add-icon">
+                                ＋
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Add Student
+                                </strong>
+
+                                <span>
+                                    Create new record
+                                </span>
+
+                            </div>
+
+                            <span class="arrow">
+                                →
+                            </span>
+
+                        </button>
+
+
+
+                        <button class="quick-action"
+                                onclick="showSection('students')">
+
+                            <div class="quick-icon list-icon">
+                                ☷
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Student List
+                                </strong>
+
+                                <span>
+                                    View all records
+                                </span>
+
+                            </div>
+
+                            <span class="arrow">
+                                →
+                            </span>
+
+                        </button>
+
+
+
+                        <button class="quick-action"
+                                onclick="showSection('searchStudent')">
+
+                            <div class="quick-icon search-icon">
+                                ⌕
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Find Student
+                                </strong>
+
+                                <span>
+                                    Search by roll number
+                                </span>
+
+                            </div>
+
+                            <span class="arrow">
+                                →
+                            </span>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ================= STUDENTS ================= -->
+
+        <section id="students"
+                 class="section">
+
+
+            <div class="page-panel">
+
+
+                <div class="panel-header students-list-header">
+
+                    <div>
+
+                        <h2>
+                            All Students
+                        </h2>
+
+                        <p>
+                            Manage all registered students
+                        </p>
+
+                    </div>
+
+
+                    <div class="table-tools">
+
+                        <div class="search-input">
+
+                            <span>
+                                ⌕
+                            </span>
+
+                            <input
+                                type="text"
+                                id="tableSearch"
+                                placeholder="Search students..."
+                                onkeyup="filterTable()">
+
+                        </div>
+
+
+                        <button class="header-add-btn small"
+                                onclick="showSection('addStudent')">
+
+                            ＋ Add Student
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table class="student-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>STUDENT</th>
+
+                                <th>ROLL NO.</th>
+
+                                <th>DEPARTMENT</th>
+
+                                <th>MARKS</th>
+
+                                <th>ACTIONS</th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="studentTable">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ================= ADD STUDENT ================= -->
+
+        <section id="addStudent"
+                 class="section">
+
+
+            <div class="form-page">
+
+
+                <div class="form-header">
+
+                    <div class="form-header-icon">
+                        👨‍🎓
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Add New Student
+                        </h2>
+
+                        <p>
+                            Enter the student's details to create a new record.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <form id="studentForm"
+                      class="student-form">
+
+
+                    <div class="form-section-title">
+
+                        <span>
+                            01
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Student Information
+                            </strong>
+
+                            <p>
+                                Basic information about the student
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="form-grid">
+
+
+                        <div class="form-field">
+
+                            <label for="roll">
+                                Roll Number
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <span>
+                                    #
+                                </span>
+
+                                <input
+                                    type="number"
+                                    id="roll"
+                                    placeholder="e.g. 101"
+                                    required>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="form-field">
+
+                            <label for="name">
+                                Full Name
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <span>
+                                    👤
+                                </span>
+
+                                <input
+                                    type="text"
+                                    id="name"
+                                    placeholder="e.g. Rahul Kumar"
+                                    required>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="form-field">
+
+                            <label for="department">
+                                Department
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <span>
+                                    🏢
+                                </span>
+
+                                <input
+                                    type="text"
+                                    id="department"
+                                    placeholder="e.g. Computer Science"
+                                    required>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="form-field">
+
+                            <label for="marks">
+                                Marks
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <span>
+                                    %
+                                </span>
+
+                                <input
+                                    type="number"
+                                    id="marks"
+                                    placeholder="e.g. 85"
+                                    min="0"
+                                    max="100"
+                                    step="0.01"
+                                    required>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="form-divider"></div>
+
+
+
+                    <div class="form-actions">
+
+                        <button
+                            type="reset"
+                            class="secondary-btn">
+
+                            Clear Form
+
+                        </button>
+
+
+                        <button
+                            type="submit"
+                            class="primary-btn">
+
+                            <span>＋</span>
+
+                            Add Student
+
+                        </button>
+
+                    </div>
+
+
+                </form>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ================= SEARCH ================= -->
+
+        <section id="searchStudent"
+                 class="section">
+
+
+            <div class="search-page">
+
+
+                <div class="search-hero">
+
+                    <div class="search-hero-icon">
+                        ⌕
+                    </div>
+
+                    <h2>
+                        Find a Student
+                    </h2>
+
+                    <p>
+                        Search for a student using their roll number.
+                    </p>
+
+
+                    <div class="large-search">
+
+                        <span>
+                            #
+                        </span>
+
+                        <input
+                            type="number"
+                            id="searchRoll"
+                            placeholder="Enter roll number...">
+
+                        <button onclick="searchStudent()">
+
+                            Search
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <div id="searchResult"
+                     class="search-result">
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+
+<!-- ================= EDIT MODAL ================= -->
+
+<div id="editModal"
+     class="modal">
+
+
+    <div class="modal-card">
+
+
+        <button class="modal-close"
+                onclick="closeModal()">
+
+            ×
+
+        </button>
+
+
+        <div class="modal-header">
+
+            <div class="modal-icon">
+                ✏️
+            </div>
+
+            <div>
+
+                <h2>
+                    Edit Student
+                </h2>
+
+                <p>
+                    Update student information
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <input type="hidden"
+               id="editRoll">
+
+
+        <div class="form-field">
+
+            <label>
+                Full Name
+            </label>
+
+            <div class="input-wrapper">
+
+                <span>
+                    👤
+                </span>
+
+                <input
+                    type="text"
+                    id="editName">
+
+            </div>
+
+        </div>
+
+
+        <div class="form-field">
+
+            <label>
+                Department
+            </label>
+
+            <div class="input-wrapper">
+
+                <span>
+                    🏢
+                </span>
+
+                <input
+                    type="text"
+                    id="editDepartment">
+
+            </div>
+
+        </div>
+
+
+        <div class="form-field">
+
+            <label>
+                Marks
+            </label>
+
+            <div class="input-wrapper">
+
+                <span>
+                    %
+                </span>
+
+                <input
+                    type="number"
+                    id="editMarks"
+                    min="0"
+                    max="100"
+                    step="0.01">
+
+            </div>
+
+        </div>
+
+
+        <button class="primary-btn modal-update"
+                onclick="updateStudent()">
+
+            Save Changes
+
+        </button>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- ================= TOAST ================= -->
+
+<div id="toast"
+     class="toast">
+
+    <span class="toast-icon">
+        ✓
+    </span>
+
+    <span id="toastMessage">
+        Success
+    </span>
+
+</div>
+
+
+
+<script src="{{ url_for('static', filename='script.js') }}">
+</script>
+
+
+</body>
+
+</html>
